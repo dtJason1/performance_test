@@ -79,10 +79,6 @@ class _AnimatedImageWidgetState extends State<AnimatedImageWidget> with SingleTi
 
     _opacityAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
     _offsetAnimation = Tween<Offset>(begin: Offset(0, -0.1), end: Offset(0, 0)).animate(_controller);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller.forward(); // 애니메이션 시작
-    });
   }
 
   @override
@@ -91,19 +87,27 @@ class _AnimatedImageWidgetState extends State<AnimatedImageWidget> with SingleTi
     super.dispose();
   }
 
+  void _triggerAnimation() {
+    _controller.reset(); // 애니메이션을 초기화
+    _controller.forward(); // 애니메이션 시작
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SlideTransition(
-      position: _offsetAnimation,
-      child: FadeTransition(
-        opacity: _opacityAnimation,
-        child: Container(
-          margin: EdgeInsets.symmetric(vertical: 10),
-          child: Image.asset(
-            widget.imagePath,
-            width: double.infinity,
-            height: 300, // 적절한 높이 설정
-            fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: _triggerAnimation, // 이미지를 터치할 때 애니메이션 트리거
+      child: SlideTransition(
+        position: _offsetAnimation,
+        child: FadeTransition(
+          opacity: _opacityAnimation,
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            child: Image.asset(
+              widget.imagePath,
+              width: double.infinity,
+              height: 300, // 적절한 높이 설정
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),
