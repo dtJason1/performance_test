@@ -103,9 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: images.map((imagePath) {
                 return Image.asset(
                   imagePath,
-                  width: 300,
-                  height: 200,
-                  fit: BoxFit.cover,
+
                 );
               }).toList(),
             ),
