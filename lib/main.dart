@@ -17,15 +17,15 @@ class _MyAppState extends State<MyApp> {
   double scrollOffset = 0;
 
   final List<String> images = [
-    'assets/image/image_1.png',
+    'assets/image/image_1.jpg',
     'assets/image/image_2.png',
     'assets/image/image_3.png',
-    'assets/image/image_4.png',
+    'assets/image/image_4.jpg',
     'assets/image/image_5.png',
     'assets/image/image_6.png',
     'assets/image/image_7.png',
     'assets/image/image_8.png',
-    'assets/image/image_9.png',
+    'assets/image/image_9.jpg',
     'assets/image/image_10.png',
   ];
 
