@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'dart:typed_data';
 
 void main() {
   runApp(MyApp());
+  allocateMemory();
 }
 
+void allocateMemory() {
+  // 100MB의 메모리를 할당하여 메모리 사용량 증가
+  List<Uint8List> memoryHogs = [];
+  for (int i = 0; i < 100; i++) {
+    memoryHogs.add(Uint8List(10 * 1024 * 1024)); // 10MB 블록
+  }
+}
 class MyApp extends StatelessWidget {
   final List<String> images = [
     'assets/image/image_1.png',
