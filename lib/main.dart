@@ -64,6 +64,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(AssetImage('assets/image/image_1.png'), context);
+    precacheImage(AssetImage('assets/image/image_2.png'), context);
+    precacheImage(AssetImage('assets/image/image_3.jpg'), context);
+
     return MaterialApp(
       home: Scaffold(
 
