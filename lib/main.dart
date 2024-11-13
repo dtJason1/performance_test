@@ -49,11 +49,16 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   // 이미지 파일 경로를 리스트로 정의
   List<String> images = [
-    'assets/image/image_1.png',
+    'assets/image/image_1.jpg',
     'assets/image/image_2.png',
-    'assets/image/image_3.jpg',
+    'assets/image/image_3.png',
     'assets/image/image_4.jpg',
-    'assets/image/image_5.jpg',
+    'assets/image/image_5.PNG',
+    'assets/image/image_6.PNG',
+    'assets/image/image_7.png',
+    'assets/image/image_8.png',
+    'assets/image/image_9.jpg',
+    'assets/image/image_10.PNG',
 
   ];
 
