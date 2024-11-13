@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:typed_data';
 
 void main() {
-  runApp(MyApp());
   allocateMemory();
+
+  runApp(MyApp());
 }
 
 void allocateMemory() {
