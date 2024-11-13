@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
 
         body: ListView.builder(
-          itemCount: images.length *10,
+          itemCount: images.length *1000,
           itemBuilder: (context, index) {
             return AnimatedImageWidget(imagePath: images[index%10]);
           },
