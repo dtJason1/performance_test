@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
         body: ListView.builder(
           itemCount: images.length *10,
           itemBuilder: (context, index) {
-            return AnimatedImageWidget(imagePath: images[index]);
+            return AnimatedImageWidget(imagePath: images[index%10]);
           },
         ),
       ),
