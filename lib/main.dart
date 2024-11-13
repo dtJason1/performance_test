@@ -113,6 +113,9 @@
 // }
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:ui' as ui;
+import 'dart:typed_data';
+
 void main() {
   runApp(MyApp());
 }
@@ -123,56 +126,37 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Memory Leak Example'),
+          title: Text('Memory Overflow Example'),
         ),
-        body: MemoryLeakWidget(),
+        body: MemoryOverflowWidget(),
       ),
     );
   }
 }
 
-class MemoryLeakWidget extends StatefulWidget {
+class MemoryOverflowWidget extends StatefulWidget {
   @override
-  _MemoryLeakWidgetState createState() => _MemoryLeakWidgetState();
+  _MemoryOverflowWidgetState createState() => _MemoryOverflowWidgetState();
 }
 
-class _MemoryLeakWidgetState extends State<MemoryLeakWidget> {
-  List<String> _largeList = [];
-  Timer? _timer;
+class _MemoryOverflowWidgetState extends State<MemoryOverflowWidget> {
+  List<Uint8List> _memoryHogs = [];
 
-  @override
-  void initState() {
-    super.initState();
+  void _triggerMemoryOverflow() {
+    // 메모리를 빠르게 채우는 코드
+    setState(() {
+      _memoryHogs.add(Uint8List(1024 * 1024 * 1)); // 50MB 블록을 무한히 추가
 
-    // 메모리를 점진적으로 채우는 초기 메서드
-    for (int i = 0; i < 10000000; i++) {
-      _largeList.add('Item $i');
-    }
-  }
-
-  void _startMemoryLeak() {
-    // 주기적으로 메모리를 점유하도록 타이머 시작
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-        print("strat memory");
-        for (int i = 0; i < 100000000000; i++) {
-          _largeList.add('Item $i');
-        }      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Container(child: Text("memory leak example"),),
-        ),
-        ElevatedButton(
-          onPressed: _startMemoryLeak,
-          child: Text('Start Memory Leak'),
-        ),
-      ],
+    return Center(
+      child: ElevatedButton(
+        onPressed: _triggerMemoryOverflow,
+        child: Text('Trigger Memory Overflow'),
+      ),
     );
   }
 }
