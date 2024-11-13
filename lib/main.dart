@@ -14,7 +14,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   ScrollController _scrollController = ScrollController();
-  double scrollOffset = 0;
 
   final List<String> images = [
     'assets/image/image_1.jpg',
@@ -32,11 +31,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(() {
-      setState(() {
-        scrollOffset = _scrollController.offset;
-      });
-    });
   }
   @override
   Widget build(BuildContext context) {
@@ -45,7 +39,7 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
 
         body: ListView.builder(
-          itemCount: images.length,
+          itemCount: images.length *10,
           itemBuilder: (context, index) {
             return AnimatedImageWidget(imagePath: images[index]);
           },
@@ -79,6 +73,9 @@ class _AnimatedImageWidgetState extends State<AnimatedImageWidget> with SingleTi
 
     _opacityAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
     _offsetAnimation = Tween<Offset>(begin: Offset(0, -0.1), end: Offset(0, 0)).animate(_controller);
+
+    _controller.repeat(); // 애니메이션 반복 시작
+
   }
 
   @override
