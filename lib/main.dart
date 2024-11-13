@@ -21,10 +21,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      showPerformanceOverlay: true, // 성능 오버레이 활성화
+
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Memory Load Test'),
-        ),
         body: ListView.builder(
           itemCount: images.length * 1000, // 많은 항목을 생성하여 메모리 사용 증가
           itemBuilder: (context, index) {
