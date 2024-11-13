@@ -88,8 +88,8 @@ class _AnimatedImageWidgetState extends State<AnimatedImageWidget> with SingleTi
   }
 
   void _triggerAnimation() {
-    _controller.reset(); // 애니메이션을 초기화
-    _controller.forward(); // 애니메이션 시작
+    _controller.repeat(); // 애니메이션 반복 시작
+
   }
 
   @override
