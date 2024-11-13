@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 
 void main() {
   runApp(const MyApp());
+  _trackFrameTimings();
+
 }
 
 class MyApp extends StatelessWidget {
@@ -11,6 +14,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      showPerformanceOverlay: true, // 성능 오버레이 활성화
+
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -19,6 +24,17 @@ class MyApp extends StatelessWidget {
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
+}
+
+void _trackFrameTimings() {
+  WidgetsBinding.instance.addTimingsCallback((List<FrameTiming> timings) {
+    for (var timing in timings) {
+      int totalDurationMs = timing.totalSpan.inMilliseconds;
+      if (totalDurationMs > 16) { // 16ms 이상이면 jank 발생으로 간주
+        print('Jank detected: Frame took ${totalDurationMs}ms');
+      }
+    }
+  });
 }
 
 class MyHomePage extends StatefulWidget {
