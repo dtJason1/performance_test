@@ -47,43 +47,45 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  // 이미지 파일 경로를 리스트로 정의
+  List<String> images = [
+    'assets/image/image_1.png',
+    'assets/image/image_2.png',
+    'assets/image/image_3.jpg',
+  ];
 
-  void _incrementCounter() {
+  int currentIndex = 0; // 현재 이미지 인덱스
+
+  void _showNextImage() {
     setState(() {
-
-      _counter++;
+      currentIndex = (currentIndex + 1) % images.length; // 다음 이미지로 이동, 리스트 끝에서 다시 처음으로
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
 
-    return Scaffold(
-
-      body: Center(
-
-        child: Column(
-
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-
-            FloatingActionButton(
-              onPressed: _incrementCounter,
-              tooltip: 'Increment',
-              child: const Icon(Icons.add),
-            ), // This trailing comma makes auto-formatting nicer for build methods.
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // 현재 인덱스의 이미지를 보여줌
+              Image.asset(
+                images[currentIndex],
+                width: 300,
+                height: 300,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _showNextImage,
+                child: Text('Show Next Image'),
+              ),
+            ],
+          ),
         ),
       ),
-
     );
   }
 }
