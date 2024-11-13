@@ -82,44 +82,14 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Center(
           child: SingleChildScrollView(
             child: Column(
-
-              children: [
-                Image.asset(
-                  images[0],
-
-                ),
-                Image.asset(
-                  images[1],
-
-                ),
-                Image.asset(
-                  images[2],
-
-                ),                Image.asset(
-                  images[3],
-
-                ),                Image.asset(
-                  images[4],
-
-                ),
-
-                Image.asset(
-                  images[5],
-
-                ),   Image.asset(
-                  images[6],
-
-                ),   Image.asset(
-                  images[7],
-
-                ),   Image.asset(
-                  images[8],
-
-                ),   Image.asset(
-                  images[9],
-
-                ),
-              ],
+              children: images.map((imagePath) {
+                return Image.asset(
+                  imagePath,
+                  width: 300,
+                  height: 200,
+                  fit: BoxFit.cover,
+                );
+              }).toList(),
             ),
           ),
         ),
