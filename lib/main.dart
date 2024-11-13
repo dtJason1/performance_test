@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'dart:typed_data';
 
 void main() {
-  allocateMemory();
 
   runApp(MyApp());
 }
 
-void allocateMemory() {
-  // 100MB의 메모리를 할당하여 메모리 사용량 증가
-  List<Uint8List> memoryHogs = [];
-  for (int i = 0; i < 100; i++) {
-    memoryHogs.add(Uint8List(10 * 1024 * 1024)); // 10MB 블록
-  }
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
 }
-class MyApp extends StatelessWidget {
+
+class _MyAppState extends State<MyApp> {
+  ScrollController _scrollController = ScrollController();
+  double scrollOffset = 0;
+
   final List<String> images = [
     'assets/image/image_1.png',
     'assets/image/image_2.png',
@@ -29,23 +30,45 @@ class MyApp extends StatelessWidget {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      setState(() {
+        scrollOffset = _scrollController.offset;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      showPerformanceOverlay: true, // 성능 오버레이 활성화
-
       home: Scaffold(
+        appBar: AppBar(
+          title: Text('Scroll Animation Example'),
+        ),
         body: ListView.builder(
-          itemCount: images.length * 1000, // 많은 항목을 생성하여 메모리 사용 증가
+          controller: _scrollController,
+          itemCount: images.length,
           itemBuilder: (context, index) {
-            int imageIndex = index % images.length;
-            return Image.asset(
-              images[imageIndex],
-              // 최대 해상도로 이미지를 로드하여 메모리 사용량 증가
-              width: double.infinity,
-              height: 1000, // 큰 높이로 이미지 로드
-              fit: BoxFit.fill,
-              cacheHeight: null, // 캐싱 해상도를 제한하지 않음
-              cacheWidth: null,
+            double animationValue = ((scrollOffset - (index * 300)) / 300).clamp(0.0, 1.0);
+            double opacity = animationValue;
+            double translateY = (1 - animationValue) * -10;
+
+            return AnimatedOpacity(
+              duration: Duration(milliseconds: 500),
+              opacity: opacity,
+              child: Transform.translate(
+                offset: Offset(0, translateY),
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  child: Image.asset(
+                    images[index],
+                    width: double.infinity,
+                    height: 700, // 적절한 높이로 설정
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             );
           },
         ),
