@@ -103,7 +103,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
                 ),
 
+                Image.asset(
+                  images[5],
 
+                ),   Image.asset(
+                  images[6],
+
+                ),   Image.asset(
+                  images[7],
+
+                ),   Image.asset(
+                  images[8],
+
+                ),   Image.asset(
+                  images[9],
+
+                ),
               ],
             ),
           ),
