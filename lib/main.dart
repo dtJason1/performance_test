@@ -52,6 +52,9 @@ class _MyHomePageState extends State<MyHomePage> {
     'assets/image/image_1.png',
     'assets/image/image_2.png',
     'assets/image/image_3.jpg',
+    'assets/image/image_4.jpg',
+    'assets/image/image_5.jpg',
+
   ];
 
   int currentIndex = 0; // 현재 이미지 인덱스
@@ -76,110 +79,23 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
 
               children: [
+                Image.asset(
+                  images[0],
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // 현재 인덱스의 이미지를 보여줌
-                    // Image.asset(
-                    //   images[0],
-                    //   width: 300,
-                    //   height: 300,
-                    // ),
-                    // Image.asset(
-                    //   images[1],
-                    //   width: 300,
-                    //   height: 300,
-                    // ),
-                    Image.asset(
-                      images[2],
-                      width: 300,
-                      height: 300,
-                    ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: _showNextImage,
-                      child: Text('Show Next Image'),
-                    ),
-                  ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // 현재 인덱스의 이미지를 보여줌
-                    // Image.asset(
-                    //   images[0],
-                    //   width: 300,
-                    //   height: 300,
-                    // ),
-                    // Image.asset(
-                    //   images[1],
-                    //   width: 300,
-                    //   height: 300,
-                    // ),
-                    Image.asset(
-                      images[2],
-                      width: 300,
-                      height: 300,
-                    ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: _showNextImage,
-                      child: Text('Show Next Image'),
-                    ),
-                  ],
+                Image.asset(
+                  images[1],
+
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // 현재 인덱스의 이미지를 보여줌
-                    // Image.asset(
-                    //   images[0],
-                    //   width: 300,
-                    //   height: 300,
-                    // ),
-                    // Image.asset(
-                    //   images[1],
-                    //   width: 300,
-                    //   height: 300,
-                    // ),
-                    Image.asset(
-                      images[2],
-                      width: 300,
-                      height: 300,
-                    ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: _showNextImage,
-                      child: Text('Show Next Image'),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // 현재 인덱스의 이미지를 보여줌
-                    // Image.asset(
-                    //   images[0],
-                    //   width: 300,
-                    //   height: 300,
-                    // ),
-                    // Image.asset(
-                    //   images[1],
-                    //   width: 300,
-                    //   height: 300,
-                    // ),
-                    Image.asset(
-                      images[2],
-                      width: 300,
-                      height: 300,
-                    ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: _showNextImage,
-                      child: Text('Show Next Image'),
-                    ),
-                  ],
+                Image.asset(
+                  images[2],
+
+                ),                Image.asset(
+                  images[3],
+
+                ),                Image.asset(
+                  images[4],
+
                 ),
 
 
