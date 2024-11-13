@@ -145,7 +145,8 @@ class _MemoryOverflowWidgetState extends State<MemoryOverflowWidget> {
   void _triggerMemoryOverflow() {
     // 메모리를 빠르게 채우는 코드
     setState(() {
-      _memoryHogs.add(Uint8List(1024 * 1024 * 1)); // 50MB 블록을 무한히 추가
+      _memoryHogs.add(Uint8List(1024 * 1024 * 100)); // 50MB 블록을 무한히 추가
+      print(_memoryHogs);
 
     });
   }
