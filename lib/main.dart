@@ -38,39 +38,73 @@ class _MyAppState extends State<MyApp> {
       });
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      showPerformanceOverlay: true,
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Scroll Animation Example'),
-        ),
+
         body: ListView.builder(
-          controller: _scrollController,
           itemCount: images.length,
           itemBuilder: (context, index) {
-            double animationValue = ((scrollOffset - (index * 300)) / 300).clamp(0.0, 1.0);
-            double opacity = animationValue;
-            double translateY = (1 - animationValue) * -10;
-
-            return AnimatedOpacity(
-              duration: Duration(milliseconds: 500),
-              opacity: opacity,
-              child: Transform.translate(
-                offset: Offset(0, translateY),
-                child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  child: Image.asset(
-                    images[index],
-                    width: double.infinity,
-                    height: 700, // 적절한 높이로 설정
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            );
+            return AnimatedImageWidget(imagePath: images[index]);
           },
+        ),
+      ),
+    );
+  }
+}
+
+class AnimatedImageWidget extends StatefulWidget {
+  final String imagePath;
+
+  const AnimatedImageWidget({Key? key, required this.imagePath}) : super(key: key);
+
+  @override
+  _AnimatedImageWidgetState createState() => _AnimatedImageWidgetState();
+}
+
+class _AnimatedImageWidgetState extends State<AnimatedImageWidget> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _opacityAnimation;
+  late Animation<Offset> _offsetAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    );
+
+    _opacityAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
+    _offsetAnimation = Tween<Offset>(begin: Offset(0, -0.1), end: Offset(0, 0)).animate(_controller);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.forward(); // 애니메이션 시작
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SlideTransition(
+      position: _offsetAnimation,
+      child: FadeTransition(
+        opacity: _opacityAnimation,
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 10),
+          child: Image.asset(
+            widget.imagePath,
+            width: double.infinity,
+            height: 300, // 적절한 높이 설정
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
