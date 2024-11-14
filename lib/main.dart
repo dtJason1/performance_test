@@ -128,32 +128,35 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('Memory Overflow Example'),
         ),
-        body: MemoryTest(),
+        body: MemoryOverflowWidget(),
       ),
     );
   }
 }
 
-class MemoryTest extends StatelessWidget {
-  final List<EdgeInsets> insets = List.generate(
-    1000000,
-        (index) => EdgeInsets.all(0),
-  );
+class MemoryOverflowWidget extends StatefulWidget {
+  @override
+  _MemoryOverflowWidgetState createState() => _MemoryOverflowWidgetState();
+}
+
+class _MemoryOverflowWidgetState extends State<MemoryOverflowWidget> {
+  List<Uint8List> _memoryHogs = [];
+
+  void _triggerMemoryOverflow() {
+    // 메모리를 빠르게 채우는 코드
+    setState(() {
+      _memoryHogs.add(Uint8List(1024 * 1024 * 1)); // 50MB 블록을 무한히 추가
+      print(_memoryHogs);
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        children: [
-          OutlinedButton(
-            child: Text("CLICK"),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (_) => MemoryTest(),
-              ));
-            },
-          ),
-        ],
+    return Center(
+      child: ElevatedButton(
+        onPressed: _triggerMemoryOverflow,
+        child: Text('Trigger Memory Overflow'),
       ),
     );
   }
