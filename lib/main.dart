@@ -2,83 +2,61 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
-    showPerformanceOverlay: true,
-    home: Page1(),
+    home: AnimatedImagePage(),
   ));
 }
 
-class Page1 extends StatelessWidget {
+class AnimatedImagePage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Page 1')),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Page2(),
-            ));
-          },
-          child: Text('Navigate to Page 2'),
-        ),
-      ),
-    );
-  }
+  _AnimatedImagePageState createState() => _AnimatedImagePageState();
 }
 
-class Page2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Page 2')),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ImagePage(),
-            ));
-          },
-          child: Text('Navigate to Image Page'),
-        ),
-      ),
-    );
-  }
-}
+class _AnimatedImagePageState extends State<AnimatedImagePage> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
-class ImagePage extends StatelessWidget {
+  @override
+  void initState() {
+    super.initState();
+
+    // AnimationController 생성 및 반복 애니메이션
+    _controller = AnimationController(
+      duration: Duration(seconds: 2),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    // 확대 및 축소 애니메이션 설정
+    _animation = Tween<double>(begin: 1.0, end: 2.0).animate(_controller);
+  }
+
+  @override
+  void dispose() {
+    // AnimationController 해제
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Image Page')),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                // 750x750 크기의 이미지 로드
-                return Image.asset(
+      appBar: AppBar(title: Text('Animated Images')),
+      body: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemCount: 10, // 10개의 이미지 사용
+        itemBuilder: (context, index) {
+          return AnimatedBuilder(
+            animation: _animation,
+            builder: (context, child) {
+              return Transform.scale(
+                scale: _animation.value, // 애니메이션에 따라 이미지 확대/축소
+                child: Image.asset(
                   'assets/image/image_$index.png',
-                  width: 2160 ,
-                  height: 2160,
-                  // cacheWidth, cacheHeight 속성 생략하여 메모리 사용량이 증가할 수 있음
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                // 무한 네비게이션으로 인해 페이지가 계속 쌓일 수 있음
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => Page1(),
-                ));
-              },
-              child: Text('Navigate to Page 1'),
-            ),
-          ),
-        ],
+                  fit: BoxFit.cover,
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
