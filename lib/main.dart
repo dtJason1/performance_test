@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
-    showPerformanceOverlay: true,
     home: FirstPage(),
   ));
 }
@@ -46,8 +45,8 @@ class _SecondPageState extends State<SecondPage> with SingleTickerProviderStateM
 
   @override
   void dispose() {
-    // 잘못된 예: _controller.dispose()를 호출하지 않음으로써 누수를 유발
-    // _controller.dispose(); // 이 주석이 해제되지 않으면 메모리 누수가 발생합니다.
+    // 주석 상태로 메모리 누수를 유발 (의도적)
+    // _controller.dispose(); // 이 주석을 제거하면 메모리 누수를 방지할 수 있습니다.
     super.dispose();
   }
 
@@ -56,25 +55,31 @@ class _SecondPageState extends State<SecondPage> with SingleTickerProviderStateM
     return Scaffold(
       appBar: AppBar(title: Text('Second Page')),
       body: Center(
-        child: AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            return Transform.scale(
-              scale: _controller.value,
-              child: child,
-            );
-          },
-          child: Icon(Icons.star, size: 100, color: Colors.blue),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) {
+                return Transform.scale(
+                  scale: _controller.value,
+                  child: child,
+                );
+              },
+              child: Icon(Icons.star, size: 100, color: Colors.blue),
+            ),
+            SizedBox(height: 20), // 간격 추가
+            ElevatedButton(
+              onPressed: () {
+                // 동일한 페이지로 다시 이동하여 새로운 AnimationController 생성
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SecondPage(),
+                ));
+              },
+              child: Text('Push Again'),
+            ),
+          ],
         ),
-      ),
-      floatingActionButton: ElevatedButton(
-        onPressed: () {
-          // 동일한 페이지로 다시 이동하여 새로운 AnimationController 생성
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => SecondPage(),
-          ));
-        },
-        child: Text('Push Again'),
       ),
     );
   }
