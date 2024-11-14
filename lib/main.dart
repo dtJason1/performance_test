@@ -98,7 +98,7 @@ class _MyAPPState extends State<MyAPP> {
       body: Stack(
         children: [
           ListView.builder(
-            itemCount: images.length,
+            itemCount: 10000,
             itemBuilder: (context, index) {
               return AnimatedImageWidget(imagePath: images[index%10]);
             },
