@@ -1,30 +1,10 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      showPerformanceOverlay: true,
-      home: Scaffold(
-        body: Center(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: 768,
-              maxHeight: 768,
-            ),
-            child: Container(
-              color: Colors.blueGrey[100],
-              child: FirstPage(),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  runApp(MaterialApp(
+    showPerformanceOverlay: true,
+    home: FirstPage(),
+  ));
 }
 
 class FirstPage extends StatelessWidget {
@@ -39,7 +19,7 @@ class FirstPage extends StatelessWidget {
               builder: (context) => SecondPage(),
             ));
           },
-          child: Text('Go to Second Page'),
+          child: Text('Navigate to Second Page'),
         ),
       ),
     );
@@ -57,17 +37,17 @@ class _SecondPageState extends State<SecondPage> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
-    // 새로운 AnimationController 생성 (해제하지 않음 -> 메모리 누수)
+    // 새로운 AnimationController 생성
     _controller = AnimationController(
       duration: Duration(seconds: 2),
       vsync: this,
-    )..repeat(); // 무한 반복 애니메이션
+    )..forward(); // 애니메이션 실행
   }
 
   @override
   void dispose() {
-    // 주석 상태로 메모리 누수를 유발 (의도적)
-    // _controller.dispose();
+    // 잘못된 예: _controller.dispose()를 호출하지 않음으로써 누수를 유발
+    // _controller.dispose(); // 이 주석이 해제되지 않으면 메모리 누수가 발생합니다.
     super.dispose();
   }
 
@@ -79,13 +59,22 @@ class _SecondPageState extends State<SecondPage> with SingleTickerProviderStateM
         child: AnimatedBuilder(
           animation: _controller,
           builder: (context, child) {
-            return Transform.rotate(
-              angle: _controller.value * 2 * 3.141592653589793,
+            return Transform.scale(
+              scale: _controller.value,
               child: child,
             );
           },
           child: Icon(Icons.star, size: 100, color: Colors.blue),
         ),
+      ),
+      floatingActionButton: ElevatedButton(
+        onPressed: () {
+          // 동일한 페이지로 다시 이동하여 새로운 AnimationController 생성
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => SecondPage(),
+          ));
+        },
+        child: Text('Push Again'),
       ),
     );
   }
