@@ -59,6 +59,8 @@ class ImagePage extends StatelessWidget {
                 // 750x750 크기의 이미지 로드
                 return Image.asset(
                   'assets/image/image_$index.png',
+                  width: 1080,
+                  height: 1080,
                   // cacheWidth, cacheHeight 속성 생략하여 메모리 사용량이 증가할 수 있음
                 );
               },
