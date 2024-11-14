@@ -53,13 +53,12 @@ class ImagePage extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            child: ListView.builder(
               itemCount: 10,
               itemBuilder: (context, index) {
                 // 750x750 크기의 이미지 로드
                 return Image.asset(
-                  'assets/image_$index.png',
+                  'assets/image/image_$index.png',
                   // cacheWidth, cacheHeight 속성 생략하여 메모리 사용량이 증가할 수 있음
                 );
               },
