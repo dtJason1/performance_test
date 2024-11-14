@@ -3,83 +3,139 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(MaterialApp(
     showPerformanceOverlay: true,
-    home: FirstPage(),
+    home: Page1(),
   ));
 }
 
-class FirstPage extends StatelessWidget {
+class Page1 extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('First Page')),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => SecondPage(),
-            ));
-          },
-          child: Text('Navigate to Second Page'),
-        ),
-      ),
-    );
-  }
+  _Page1State createState() => _Page1State();
 }
 
-class SecondPage extends StatefulWidget {
-  @override
-  _SecondPageState createState() => _SecondPageState();
-}
-
-class _SecondPageState extends State<SecondPage> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+class _Page1State extends State<Page1> with TickerProviderStateMixin {
+  List<AnimationController> _controllers = [];
 
   @override
   void initState() {
     super.initState();
-    // 새로운 AnimationController 생성
-    _controller = AnimationController(
-      duration: Duration(seconds: 2),
-      vsync: this,
-    )..forward(); // 애니메이션 실행
+    // 여러 개의 AnimationController 생성
+    for (int i = 0; i < 50; i++) {
+      _controllers.add(AnimationController(
+        duration: Duration(seconds: 2),
+        vsync: this,
+      )..forward());
+    }
   }
 
   @override
   void dispose() {
-    // 주석 상태로 메모리 누수를 유발 (의도적)
-    // _controller.dispose(); // 이 주석을 제거하면 메모리 누수를 방지할 수 있습니다.
+    // 주석 처리로 인해 메모리 누수 발생
+    // _controllers.forEach((controller) => controller.dispose());
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Second Page')),
+      appBar: AppBar(title: Text('Page 1')),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AnimatedBuilder(
-              animation: _controller,
-              builder: (context, child) {
-                return Transform.scale(
-                  scale: _controller.value,
-                  child: child,
-                );
-              },
-              child: Icon(Icons.star, size: 100, color: Colors.blue),
-            ),
-            SizedBox(height: 20), // 간격 추가
-            ElevatedButton(
-              onPressed: () {
-                // 동일한 페이지로 다시 이동하여 새로운 AnimationController 생성
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SecondPage(),
-                ));
-              },
-              child: Text('Push Again'),
-            ),
-          ],
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Page2(),
+            ));
+          },
+          child: Text('Navigate to Page 2'),
+        ),
+      ),
+    );
+  }
+}
+
+class Page2 extends StatefulWidget {
+  @override
+  _Page2State createState() => _Page2State();
+}
+
+class _Page2State extends State<Page2> with TickerProviderStateMixin {
+  List<AnimationController> _controllers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // 여러 개의 AnimationController 생성
+    for (int i = 0; i < 50; i++) {
+      _controllers.add(AnimationController(
+        duration: Duration(seconds: 2),
+        vsync: this,
+      )..forward());
+    }
+  }
+
+  @override
+  void dispose() {
+    // 주석 처리로 인해 메모리 누수 발생
+    // _controllers.forEach((controller) => controller.dispose());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Page 2')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Page3(),
+            ));
+          },
+          child: Text('Navigate to Page 3'),
+        ),
+      ),
+    );
+  }
+}
+
+class Page3 extends StatefulWidget {
+  @override
+  _Page3State createState() => _Page3State();
+}
+
+class _Page3State extends State<Page3> with TickerProviderStateMixin {
+  List<AnimationController> _controllers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // 여러 개의 AnimationController 생성
+    for (int i = 0; i < 50; i++) {
+      _controllers.add(AnimationController(
+        duration: Duration(seconds: 2),
+        vsync: this,
+      )..forward());
+    }
+  }
+
+  @override
+  void dispose() {
+    // 주석 처리로 인해 메모리 누수 발생
+    // _controllers.forEach((controller) => controller.dispose());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Page 3')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Page1(),
+            ));
+          },
+          child: Text('Navigate to Page 1'),
         ),
       ),
     );
