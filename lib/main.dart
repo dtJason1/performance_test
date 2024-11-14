@@ -1,141 +1,53 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 void main() {
-  runApp(MaterialApp(
-    showPerformanceOverlay: true,
-    home: Page1(),
-  ));
+  runApp(MyApp());
 }
 
-class Page1 extends StatefulWidget {
-  @override
-  _Page1State createState() => _Page1State();
-}
-
-class _Page1State extends State<Page1> with TickerProviderStateMixin {
-  List<AnimationController> _controllers = [];
-
-  @override
-  void initState() {
-    super.initState();
-    // 여러 개의 AnimationController 생성
-    for (int i = 0; i < 50; i++) {
-      _controllers.add(AnimationController(
-        duration: Duration(seconds: 2),
-        vsync: this,
-      )..forward());
-    }
-  }
-
-  @override
-  void dispose() {
-    // 주석 처리로 인해 메모리 누수 발생
-    // _controllers.forEach((controller) => controller.dispose());
-    super.dispose();
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Page 1')),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Page2(),
-            ));
-          },
-          child: Text('Navigate to Page 2'),
-        ),
-      ),
+    return MaterialApp(
+      home: FrequentSetStatePage(),
     );
   }
 }
 
-class Page2 extends StatefulWidget {
+class FrequentSetStatePage extends StatefulWidget {
   @override
-  _Page2State createState() => _Page2State();
+  _FrequentSetStatePageState createState() => _FrequentSetStatePageState();
 }
 
-class _Page2State extends State<Page2> with TickerProviderStateMixin {
-  List<AnimationController> _controllers = [];
+class _FrequentSetStatePageState extends State<FrequentSetStatePage> {
+  int _counter = 0;
+  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    // 여러 개의 AnimationController 생성
-    for (int i = 0; i < 50; i++) {
-      _controllers.add(AnimationController(
-        duration: Duration(seconds: 2),
-        vsync: this,
-      )..forward());
-    }
+    // 10ms마다 setState()를 호출하는 타이머
+    _timer = Timer.periodic(Duration(milliseconds: 10), (timer) {
+      setState(() {
+        _counter++;
+      });
+    });
   }
 
   @override
   void dispose() {
-    // 주석 처리로 인해 메모리 누수 발생
-    // _controllers.forEach((controller) => controller.dispose());
+    _timer.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Page 2')),
+      appBar: AppBar(title: Text('Frequent setState Example')),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Page3(),
-            ));
-          },
-          child: Text('Navigate to Page 3'),
-        ),
-      ),
-    );
-  }
-}
-
-class Page3 extends StatefulWidget {
-  @override
-  _Page3State createState() => _Page3State();
-}
-
-class _Page3State extends State<Page3> with TickerProviderStateMixin {
-  List<AnimationController> _controllers = [];
-
-  @override
-  void initState() {
-    super.initState();
-    // 여러 개의 AnimationController 생성
-    for (int i = 0; i < 50; i++) {
-      _controllers.add(AnimationController(
-        duration: Duration(seconds: 2),
-        vsync: this,
-      )..forward());
-    }
-  }
-
-  @override
-  void dispose() {
-    // 주석 처리로 인해 메모리 누수 발생
-    // _controllers.forEach((controller) => controller.dispose());
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Page 3')),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Page1(),
-            ));
-          },
-          child: Text('Navigate to Page 1'),
+        child: Text(
+          'Counter: $_counter',
+          style: TextStyle(fontSize: 24),
         ),
       ),
     );
