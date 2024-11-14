@@ -72,7 +72,7 @@ class _MyAPPState extends State<MyAPP> {
       'assets/image/image_9.jpg',
       'assets/image/image_10.png',
     ];
-    final List<String> images = List.generate(10, (index) => initialImages[index % 10] );
+    final List<String> images = List.generate(1000, (index) => initialImages[index % 10] );
 
 // Fill the beginning of the 'images' list with 'initialImages'
     for (int i = 0; i < initialImages.length; i++) {
@@ -94,16 +94,20 @@ class _MyAPPState extends State<MyAPP> {
 
 
     return Scaffold(
-      appBar: AppBar(
-        actions: [
+
+      body: Stack(
+        children: [
+          ListView.builder(
+            itemCount: images.length,
+            itemBuilder: (context, index) {
+              return AnimatedImageWidget(imagePath: images[index%10]);
+            },
+          ),
+
           ElevatedButton(onPressed: onPressed, child: Text("MOVE"))
-        ],
-      ),
-      body: ListView.builder(
-        itemCount: images.length,
-        itemBuilder: (context, index) {
-          return AnimatedImageWidget(imagePath: images[index%10]);
-        },
+
+
+        ]
       ),
     );
 
