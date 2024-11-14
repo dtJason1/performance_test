@@ -2,61 +2,141 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: AnimatedImagePage(),
+    showPerformanceOverlay: true,
+    home: Page1(),
   ));
 }
 
-class AnimatedImagePage extends StatefulWidget {
+class Page1 extends StatefulWidget {
   @override
-  _AnimatedImagePageState createState() => _AnimatedImagePageState();
+  _Page1State createState() => _Page1State();
 }
 
-class _AnimatedImagePageState extends State<AnimatedImagePage> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
+class _Page1State extends State<Page1> with TickerProviderStateMixin {
+  List<AnimationController> _controllers = [];
 
   @override
   void initState() {
     super.initState();
-
-    // AnimationController 생성 및 반복 애니메이션
-    _controller = AnimationController(
-      duration: Duration(seconds: 2),
-      vsync: this,
-    )..repeat(reverse: true);
-
-    // 확대 및 축소 애니메이션 설정
-    _animation = Tween<double>(begin: 1.0, end: 2.0).animate(_controller);
+    // 여러 개의 AnimationController 생성
+    for (int i = 0; i < 50; i++) {
+      _controllers.add(AnimationController(
+        duration: Duration(seconds: 2),
+        vsync: this,
+      )..forward());
+    }
   }
 
   @override
   void dispose() {
-    // AnimationController 해제
-    _controller.dispose();
+    // 주석 처리로 인해 메모리 누수 발생
+    // _controllers.forEach((controller) => controller.dispose());
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Animated Images')),
-      body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemCount: 100000, // 10개의 이미지 사용
-        itemBuilder: (context, index) {
-          return AnimatedBuilder(
-            animation: _animation,
-            builder: (context, child) {
-              return Transform.scale(
-                scale: _animation.value, // 애니메이션에 따라 이미지 확대/축소
-                child: Image.asset(
-                  'assets/image/image_${index%10}.png',
-                  fit: BoxFit.cover,
-                ),
-              );
-            },
-          );
-        },
+      appBar: AppBar(title: Text('Page 1')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Page2(),
+            ));
+          },
+          child: Text('Navigate to Page 2'),
+        ),
+      ),
+    );
+  }
+}
+
+class Page2 extends StatefulWidget {
+  @override
+  _Page2State createState() => _Page2State();
+}
+
+class _Page2State extends State<Page2> with TickerProviderStateMixin {
+  List<AnimationController> _controllers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // 여러 개의 AnimationController 생성
+    for (int i = 0; i < 50; i++) {
+      _controllers.add(AnimationController(
+        duration: Duration(seconds: 2),
+        vsync: this,
+      )..forward());
+    }
+  }
+
+  @override
+  void dispose() {
+    // 주석 처리로 인해 메모리 누수 발생
+    // _controllers.forEach((controller) => controller.dispose());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Page 2')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Page3(),
+            ));
+          },
+          child: Text('Navigate to Page 3'),
+        ),
+      ),
+    );
+  }
+}
+
+class Page3 extends StatefulWidget {
+  @override
+  _Page3State createState() => _Page3State();
+}
+
+class _Page3State extends State<Page3> with TickerProviderStateMixin {
+  List<AnimationController> _controllers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // 여러 개의 AnimationController 생성
+    for (int i = 0; i < 50; i++) {
+      _controllers.add(AnimationController(
+        duration: Duration(seconds: 2),
+        vsync: this,
+      )..forward());
+    }
+  }
+
+  @override
+  void dispose() {
+    // 주석 처리로 인해 메모리 누수 발생
+    // _controllers.forEach((controller) => controller.dispose());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Page 3')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Page1(),
+            ));
+          },
+          child: Text('Navigate to Page 1'),
+        ),
       ),
     );
   }
