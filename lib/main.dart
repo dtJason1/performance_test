@@ -42,7 +42,7 @@ class _AnimatedImagePageState extends State<AnimatedImagePage> with SingleTicker
       appBar: AppBar(title: Text('Animated Images')),
       body: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemCount: 10, // 10개의 이미지 사용
+        itemCount: 100000, // 10개의 이미지 사용
         itemBuilder: (context, index) {
           return AnimatedBuilder(
             animation: _animation,
@@ -50,7 +50,7 @@ class _AnimatedImagePageState extends State<AnimatedImagePage> with SingleTicker
               return Transform.scale(
                 scale: _animation.value, // 애니메이션에 따라 이미지 확대/축소
                 child: Image.asset(
-                  'assets/image/image_$index.png',
+                  'assets/image/image_${index%10}.png',
                   fit: BoxFit.cover,
                 ),
               );
