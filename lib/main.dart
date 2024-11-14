@@ -1,9 +1,30 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: FirstPage(),
-  ));
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      showPerformanceOverlay: true,
+      home: Scaffold(
+        body: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 768,
+              maxHeight: 768,
+            ),
+            child: Container(
+              color: Colors.blueGrey[100],
+              child: FirstPage(),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class FirstPage extends StatelessWidget {
@@ -14,7 +35,6 @@ class FirstPage extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            // 사용자가 페이지를 이동할 때마다 새로운 컨트롤러 생성
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => SecondPage(),
             ));
@@ -37,7 +57,7 @@ class _SecondPageState extends State<SecondPage> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
-    // 새로운 AnimationController 생성
+    // 새로운 AnimationController 생성 (해제하지 않음 -> 메모리 누수)
     _controller = AnimationController(
       duration: Duration(seconds: 2),
       vsync: this,
@@ -46,7 +66,7 @@ class _SecondPageState extends State<SecondPage> with SingleTickerProviderStateM
 
   @override
   void dispose() {
-    // 주석 처리된 상태로 누수 발생 예시 (의도적으로 dispose하지 않음)
+    // 주석 상태로 메모리 누수를 유발 (의도적)
     // _controller.dispose();
     super.dispose();
   }
