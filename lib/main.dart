@@ -20,7 +20,7 @@ class _Page1State extends State<Page1> {
     super.initState();
     // 여러 Image 위젯 생성 및 리스트에 추가 (navigate 시 문제가 발생하도록 설정)
     for (int i = 0; i < 10; i++) {
-      _images.add(Image.asset("assets/image/hello.gif"));
+      _images.add(Image.asset("assets/image/helloo.gif"));
     }
   }
 
