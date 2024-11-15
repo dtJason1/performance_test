@@ -45,10 +45,10 @@ class _Page1State extends State<Page1> with TickerProviderStateMixin {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => Page3(),
+                  builder: (context) => Page2(),
                 ));
               },
-              child: Text('Navigate to Page 3'),
+              child: Text('Navigate to Page 2'),
             ),
           ],
         ),
@@ -145,10 +145,10 @@ class _Page3State extends State<Page3> with TickerProviderStateMixin {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => Page3(),
+                  builder: (context) => Page1(),
                 ));
               },
-              child: Text('Navigate to Page 3'),
+              child: Text('Navigate to Page 1'),
             ),
           ],
         ),
