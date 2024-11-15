@@ -27,7 +27,7 @@ class _Page1State extends State<Page1> {
   @override
   void dispose() {
     // 메모리 누수 방지를 위한 코드가 없는 상태
-    // _images.clear(); // 이미지 리스트 비우기(해제) 코드가 누락됨
+    _images.clear(); // 이미지 리스트 비우기(해제) 코드가 누락됨
     super.dispose();
   }
 
@@ -48,7 +48,7 @@ class _Page1State extends State<Page1> {
           ElevatedButton(
             onPressed: () {
               // 잘못된 방식으로 무제한 push 발생 가능
-              Navigator.of(context).push(
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => Page1()),
               );
             },
