@@ -23,7 +23,7 @@ class _Page1State extends State<Page1> with TickerProviderStateMixin {
       _controllers.add(AnimationController(
         duration: Duration(seconds: 2),
         vsync: this,
-      )..forward());
+      )..repeat());
     }
   }
 
@@ -39,13 +39,18 @@ class _Page1State extends State<Page1> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(title: Text('Page 1')),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Page2(),
-            ));
-          },
-          child: Text('Navigate to Page 2'),
+        child: Column(
+          children: [
+            Image.asset("assets/image/helloo.gif"),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => Page3(),
+                ));
+              },
+              child: Text('Navigate to Page 3'),
+            ),
+          ],
         ),
       ),
     );
@@ -68,7 +73,7 @@ class _Page2State extends State<Page2> with TickerProviderStateMixin {
       _controllers.add(AnimationController(
         duration: Duration(seconds: 2),
         vsync: this,
-      )..forward());
+      )..repeat());
     }
   }
 
@@ -84,13 +89,18 @@ class _Page2State extends State<Page2> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(title: Text('Page 2')),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Page3(),
-            ));
-          },
-          child: Text('Navigate to Page 3'),
+        child: Column(
+          children: [
+            Image.asset("assets/image/helloo.gif"),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => Page3(),
+                ));
+              },
+              child: Text('Navigate to Page 3'),
+            ),
+          ],
         ),
       ),
     );
@@ -113,7 +123,7 @@ class _Page3State extends State<Page3> with TickerProviderStateMixin {
       _controllers.add(AnimationController(
         duration: Duration(seconds: 2),
         vsync: this,
-      )..forward());
+      )..repeat());
     }
   }
 
@@ -129,13 +139,18 @@ class _Page3State extends State<Page3> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(title: Text('Page 3')),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Page1(),
-            ));
-          },
-          child: Text('Navigate to Page 1'),
+        child: Column(
+          children: [
+            Image.asset("assets/image/helloo.gif"),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => Page3(),
+                ));
+              },
+              child: Text('Navigate to Page 3'),
+            ),
+          ],
         ),
       ),
     );
