@@ -53,13 +53,11 @@ class _CustomPaintExampleState extends State<CustomPaintExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('CustomPaint with Image')),
-      body: Center(
-        child: _image == null
-            ? CircularProgressIndicator()
-            : CustomPaint(
-          size: Size(300, 300),
-          painter: MyCustomPainter(_image!),
-        ),
+      body: _image == null
+          ? CircularProgressIndicator()
+          : CustomPaint(
+        size: Size(300, 300),
+        painter: MyCustomPainter(_image!),
       ),
     );
   }
