@@ -27,7 +27,7 @@ class _Page1State extends State<Page1> {
   @override
   void dispose() {
     // 메모리 누수 방지를 위한 코드가 없는 상태
-    _images.clear(); // 이미지 리스트 비우기(해제) 코드가 누락됨
+    // _images.clear(); // 이미지 리스트 비우기(해제) 코드가 누락됨
     super.dispose();
   }
 
@@ -84,7 +84,7 @@ class _Page2State extends State<Page2> with TickerProviderStateMixin {
   @override
   void dispose() {
     // 주석 처리로 인해 메모리 누수 발생
-    _controllers.forEach((controller) => controller.dispose());
+    // _controllers.forEach((controller) => controller.dispose());
     super.dispose();
   }
 
@@ -131,10 +131,10 @@ class _Page3State extends State<Page3> with TickerProviderStateMixin {
     }
   }
 
-  @override
+  @override    // _controllers.forEach((controller) => controller.dispose());
+
   void dispose() {
     // 주석 처리로 인해 메모리 누수 발생
-    // _controllers.forEach((controller) => controller.dispose());
     super.dispose();
   }
 
