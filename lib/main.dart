@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'Overlay_test.dart';
 void main() {
   runApp(MaterialApp(
     showPerformanceOverlay: true,
-    home: Page1(),
+    home: SplashScreen(),
   ));
 }
 
