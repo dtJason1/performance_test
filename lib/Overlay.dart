@@ -1,7 +1,7 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'main.dart';
 class MyCustomPainter extends CustomPainter {
   final ui.Image image;
 
@@ -52,7 +52,18 @@ class _CustomPaintExampleState extends State<CustomPaintExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('CustomPaint with Image')),
+      appBar: AppBar(title: Text('CustomPaint with Image'),
+      actions: [
+        ElevatedButton(
+          onPressed: () {
+            // 잘못된 방식으로 무제한 push 발생 가능
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => Page1()),
+            );
+          },
+          child: Text('Push New Page1'),
+        ),
+      ],),
       body: _image == null
           ? CircularProgressIndicator()
           : CustomPaint(
