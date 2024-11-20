@@ -1,232 +1,162 @@
-import 'dart:async';
-
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MaterialApp(home: _SimpleExampleApp()));
+  runApp(MaterialApp(
+    showPerformanceOverlay: true,
+    home: Page1(),
+  ));
 }
 
-class _SimpleExampleApp extends StatefulWidget {
-  const _SimpleExampleApp();
-
+class Page1 extends StatefulWidget {
   @override
-  _SimpleExampleAppState createState() => _SimpleExampleAppState();
+  _Page1State createState() => _Page1State();
 }
 
-class _SimpleExampleAppState extends State<_SimpleExampleApp> {
-  late AudioPlayer player = AudioPlayer();
+class _Page1State extends State<Page1> {
+  List<Image> _images = []; // 이미지 리스트를 저장하는 변수
 
   @override
   void initState() {
     super.initState();
-
-    // Create the audio player.
-    player = AudioPlayer();
-
-    // Set the release mode to keep the source after playback has completed.
-    player.setReleaseMode(ReleaseMode.stop);
-
-    // Start the player as soon as the app is displayed.
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await player.setSource(AssetSource('BabyCry.mp3'));
-      await player.resume();
-    });
+    // 여러 Image 위젯 생성 및 리스트에 추가 (navigate 시 문제가 발생하도록 설정)
+    for (int i = 0; i < 10; i++) {
+      _images.add(Image.asset("assets/image/helloo.gif"));
+    }
   }
 
   @override
   void dispose() {
-    // Release all sources and dispose the player.
-    player.dispose();
-
+    // 메모리 누수 방지를 위한 코드가 없는 상태
+    _images.clear(); // 이미지 리스트 비우기(해제) 코드가 누락됨
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Simple Player'),
+      appBar: AppBar(title: Text('Page 1')),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: _images.length,
+              itemBuilder: (context, index) {
+                return _images[index]; // 생성된 이미지를 반환
+              },
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // 잘못된 방식으로 무제한 push 발생 가능
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => Page1()),
+              );
+            },
+            child: Text('Push New Page1'),
+          ),
+        ],
       ),
-      body: PlayerWidget(player: player),
     );
   }
 }
 
-// The PlayerWidget is a copy of "/lib/components/player_widget.dart".
-//#region PlayerWidget
 
-class PlayerWidget extends StatefulWidget {
-  final AudioPlayer player;
-
-  const PlayerWidget({
-    required this.player,
-    super.key,
-  });
-
+class Page2 extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return _PlayerWidgetState();
-  }
+  _Page2State createState() => _Page2State();
 }
 
-class _PlayerWidgetState extends State<PlayerWidget> {
-  PlayerState? _playerState;
-  Duration? _duration;
-  Duration? _position;
-
-  StreamSubscription? _durationSubscription;
-  StreamSubscription? _positionSubscription;
-  StreamSubscription? _playerCompleteSubscription;
-  StreamSubscription? _playerStateChangeSubscription;
-
-  bool get _isPlaying => _playerState == PlayerState.playing;
-
-  bool get _isPaused => _playerState == PlayerState.paused;
-
-  String get _durationText => _duration?.toString().split('.').first ?? '';
-
-  String get _positionText => _position?.toString().split('.').first ?? '';
-
-  AudioPlayer get player => widget.player;
+class _Page2State extends State<Page2> with TickerProviderStateMixin {
+  List<AnimationController> _controllers = [];
 
   @override
   void initState() {
     super.initState();
-    // Use initial values from player
-    _playerState = player.state;
-    player.getDuration().then(
-          (value) => setState(() {
-        _duration = value;
-      }),
-    );
-    player.getCurrentPosition().then(
-          (value) => setState(() {
-        _position = value;
-      }),
-    );
-    _initStreams();
-  }
-
-  @override
-  void setState(VoidCallback fn) {
-    // Subscriptions only can be closed asynchronously,
-    // therefore events can occur after widget has been disposed.
-    if (mounted) {
-      super.setState(fn);
+    // 여러 개의 AnimationController 생성
+    for (int i = 0; i < 50; i++) {
+      _controllers.add(AnimationController(
+        duration: Duration(seconds: 2),
+        vsync: this,
+      )..repeat());
     }
   }
 
   @override
   void dispose() {
-    _durationSubscription?.cancel();
-    _positionSubscription?.cancel();
-    _playerCompleteSubscription?.cancel();
-    _playerStateChangeSubscription?.cancel();
+    // 주석 처리로 인해 메모리 누수 발생
+    _controllers.forEach((controller) => controller.dispose());
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).primaryColor;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Row(
-          mainAxisSize: MainAxisSize.min,
+    return Scaffold(
+      appBar: AppBar(title: Text('Page 2')),
+      body: Center(
+        child: Column(
           children: [
-            IconButton(
-              key: const Key('play_button'),
-              onPressed: _isPlaying ? null : _play,
-              iconSize: 48.0,
-              icon: const Icon(Icons.play_arrow),
-              color: color,
-            ),
-            IconButton(
-              key: const Key('pause_button'),
-              onPressed: _isPlaying ? _pause : null,
-              iconSize: 48.0,
-              icon: const Icon(Icons.pause),
-              color: color,
-            ),
-            IconButton(
-              key: const Key('stop_button'),
-              onPressed: _isPlaying || _isPaused ? _stop : null,
-              iconSize: 48.0,
-              icon: const Icon(Icons.stop),
-              color: color,
+            Image.asset("assets/image/helloo.gif"),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => Page3(),
+                ));
+              },
+              child: Text('Navigate to Page 3'),
             ),
           ],
         ),
-        Slider(
-          onChanged: (value) {
-            final duration = _duration;
-            if (duration == null) {
-              return;
-            }
-            final position = value * duration.inMilliseconds;
-            player.seek(Duration(milliseconds: position.round()));
-          },
-          value: (_position != null &&
-              _duration != null &&
-              _position!.inMilliseconds > 0 &&
-              _position!.inMilliseconds < _duration!.inMilliseconds)
-              ? _position!.inMilliseconds / _duration!.inMilliseconds
-              : 0.0,
-        ),
-        Text(
-          _position != null
-              ? '$_positionText / $_durationText'
-              : _duration != null
-              ? _durationText
-              : '',
-          style: const TextStyle(fontSize: 16.0),
-        ),
-      ],
+      ),
     );
-  }
-
-  void _initStreams() {
-    _durationSubscription = player.onDurationChanged.listen((duration) {
-      setState(() => _duration = duration);
-    });
-
-    _positionSubscription = player.onPositionChanged.listen(
-          (p) => setState(() => _position = p),
-    );
-
-    _playerCompleteSubscription = player.onPlayerComplete.listen((event) {
-      setState(() {
-        _playerState = PlayerState.stopped;
-        _position = Duration.zero;
-      });
-    });
-
-    _playerStateChangeSubscription =
-        player.onPlayerStateChanged.listen((state) {
-          setState(() {
-            _playerState = state;
-          });
-        });
-  }
-
-  Future<void> _play() async {
-    await player.resume();
-    setState(() => _playerState = PlayerState.playing);
-  }
-
-  Future<void> _pause() async {
-    await player.pause();
-    setState(() => _playerState = PlayerState.paused);
-  }
-
-  Future<void> _stop() async {
-    await player.stop();
-    setState(() {
-      _playerState = PlayerState.stopped;
-      _position = Duration.zero;
-    });
   }
 }
 
-//#endregion
+class Page3 extends StatefulWidget {
+  @override
+  _Page3State createState() => _Page3State();
+}
+
+class _Page3State extends State<Page3> with TickerProviderStateMixin {
+  List<AnimationController> _controllers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // 여러 개의 AnimationController 생성
+    for (int i = 0; i < 50; i++) {
+      _controllers.add(AnimationController(
+        duration: Duration(seconds: 2),
+        vsync: this,
+      )..repeat());
+    }
+  }
+
+  @override
+  void dispose() {
+    // 주석 처리로 인해 메모리 누수 발생
+    _controllers.forEach((controller) => controller.dispose());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Page 3')),
+      body: Center(
+        child: Column(
+          children: [
+            Image.asset("assets/image/helloo.gif"),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => Page1(),
+                ));
+              },
+              child: Text('Navigate to Page 1'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
