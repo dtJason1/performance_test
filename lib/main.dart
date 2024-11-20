@@ -134,7 +134,7 @@ class _Page3State extends State<Page3> with TickerProviderStateMixin {
   @override
   void dispose() {
     // 주석 처리로 인해 메모리 누수 발생
-    _controllers.forEach((controller) => controller.dispose());
+    // _controllers.forEach((controller) => controller.dispose());
     super.dispose();
   }
 
