@@ -13,7 +13,7 @@ class MyCustomPainter extends CustomPainter {
       ..blendMode = BlendMode.overlay;
 
 
-    canvas.drawImage(image, Offset.zero, Paint());
+    canvas.drawImage(image,  Offset(0,0), Paint());
 
     canvas.drawImage(image, Offset(-image.width.toDouble()/2,0), paint);
 
@@ -42,7 +42,7 @@ class _CustomPaintExampleState extends State<CustomPaintExample> {
   }
 
   Future<void> _loadImage() async {
-    final ByteData data = await rootBundle.load('assets/image/image_1.jpg');
+    final ByteData data = await rootBundle.load('assets/image/image_4.jpg');
     final ui.Image image = await decodeImageFromList(data.buffer.asUint8List());
     setState(() {
       _image = image;
